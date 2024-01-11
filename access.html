@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>quiz-app</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <section class="main">
+            <header class="header">
+                <h1 href="#" class="logo">Quiz</h1>
+                <nav class="navbar">
+                </nav>
+            </header>
+
+            <section class="main-body">
+                <div class="wrapper">
+                    <div class="form-container sign-up">
+                        <form action="#" id="signup-form" class="register">
+                            <h2>sign up</h2>
+                            <div class="form-group">
+                                <input type="text" id="fullname" required>
+                                <label for>username</label>
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="form-group">
+
+                                <input type="text" id="signup-email" required>
+                                <label for>Email</label>
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="form-group">
+
+                                <input type="text" id="signup-password" required>
+                                <label for>password</label>
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <button type="submit" class="btn" onclick="registerUser()">sign up</button>
+                            <div class="link">
+                                <p>You already have an account?<a href="#"
+                                        class="signin-link"> sign in</a></p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-container sign-in">
+                        <form action="#" id="login-form">
+                            <h2>login</h2>
+                            <div class="form-group">
+                                <input type="text" id="login-email" required>
+                                <i class="fas fa-user"></i>
+                                <label for>Email</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="login-password"
+                                    required>
+                                <i class="fas fa-user"></i>
+                                <label for>password</label>
+                            </div>
+                            <div class="forgot-pass">
+                                <a href="#">forgot password?</a>
+                            </div>
+                            <button type="submit" class="btn" onclick="ValidateUser()">login</button>
+                            <div class="link">
+                                <p>Don't have an account?<a href="#"
+                                        class="signup-link"> sign up</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </section>
+    
+        <script src="script.js"></script>
+        <script>
+            const USER_API = "http://localhost:2024/user";
+            function addUser(username, email, password) {
+                const body = {
+                username,
+                email,
+                password
+                };
+                localStorage.setItem('currentUser',JSON.stringify(body))
+                body.raw_json = JSON.stringify(body);
+    
+                fetch(USER_API, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+                })
+                .then((response) => {
+                    // return response.json();
+                    console.log(response)
+                })
+                .catch((error) => console.error("Error:", error));
+            }
+    
+    
+            function registerUser (){
+              let username = document.getElementById('fullname').value;
+              let email = document.getElementById('signup-email').value;
+              let password = document.getElementById('signup-password').value;
+    
+              if(username == ""){
+                document.getElementById('error').innerHTML = "username is empty";
+              }
+              else if(email == ""){
+                document.getElementById('error').innerHTML = "email is empty";
+              }
+              else if(password == "" || password <8){
+                document.getElementById('error').innerHTML = "password length should be 8 ";
+              }else{
+                addUser(username,email,password);
+              }
+            }
+        </script>
+        <script>
+            async function ValidateUser() {
+              const users = await fetch("http://localhost:2024/user");
+              const registeredUsers = await users.json();
+              console.log(registeredUsers);
+              let email = document.getElementById("login-email").value;
+              let password = document.getElementById("login-password").value;
+      
+              for (i = 0; i < registeredUsers.length; i++) {
+                if (
+                  email == registeredUsers[i].email &&
+                  password == registeredUsers[i].password
+                ) {
+                  let currentUser  = {
+                      username:registeredUsers[i].username,
+                      email:email,
+                      password:password,
+                  }
+                  localStorage.setItem('currentUser',JSON.stringify(currentUser))
+                  window.location.href = "index.html";
+                } else if (email == "" && password == "") {
+                  document.getElementById("login-error").innerHTML =
+                    "enter email and password";
+                }
+              }
+            }
+          </script>
+    </body>
+</html>

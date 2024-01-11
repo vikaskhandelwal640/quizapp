@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>quiz-app</title>
+      <link rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+         crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'
+         rel='stylesheet'>
+      <link
+         rel="stylesheet"
+         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+         crossorigin="anonymous" />
+      <link rel="stylesheet" href="quiz app.css">:
+
+   </head>
+   <body onload="loadData()">
+
+      
+      <section class="main" class="container quest-box">
+         <section class="header" id="header">
+            <h1 class="logo">Quiz</h1>
+            <nav class="navbar" id="navbar">
+               <a href="#" class="active">Home</a>
+               <a href="access.html">Register</a>
+               <a href="access.html">Login</a>
+            </nav>
+         </section>
+         <div class="container quest-box">
+            <div id="app" class="row"></div>
+            <div class="row justify-content-center">
+               <div class="col-md-6 text-right">
+                  <a href="#" id="check" class="btn btn-primary btn-lg mt-5"> Check
+                  </a>
+               </div>
+            </div>
+         </div>
+         <div class="start"><button id="start_btn">Start Quiz</button></div>
+
+         <script src="question.js"></script>
+         <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+         <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+         <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+         <script>
+            
+function loadData() {
+   document.getElementById("check").style.display="none";
+  let user = localStorage.getItem("currentUser");
+  let currentUser = JSON.parse(user);
+
+  if (currentUser.hasOwnProperty("email")) {
+    document.getElementById("navbar").style.display = "none";
+    let header = document.getElementById("header");
+    let newDiv = header.appendChild(document.createElement("div"));
+    newDiv.innerHTML = `<div id="loged-container">Hello ${currentUser.username}</div>`;
+    newDiv.style.fontSize = "30px";
+    newDiv.style.fontWeight = "500";
+    newDiv.style.color = "white";
+    newDiv.style.fontFamily = "Arial";
+    newDiv.style.display = "flex";
+    newDiv.style.gap = "50px";
+    newDiv.style.alignItems = "center";
+    newDiv.id = "log-main";
+
+    let button = newDiv.appendChild(document.createElement("div"));
+    button.innerHTML = `<p id="logout" class="bn53" onclick="logoutUser()">Log Out</p> `;
+  }
+}
+
+function logoutUser() {
+  localStorage.removeItem("currentUser");
+  document.getElementById("start_btn").style.display = "block";
+  document.getElementById("logout").style.display = "none";
+  document.getElementById("navbar").style.display = "flex";
+  document.querySelector(".col-12").style.display ="none";
+document.getElementById("log-main").style.display = "none";
+document.getElementById("check").style.display = "none";
+}
+         </script>
+      </body>
+   </html>
